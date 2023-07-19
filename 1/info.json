@@ -1,0 +1,8 @@
+{
+    "name": "Matherätsel",
+    "description": "Zahlenpyramiden mit Additionsaufgaben im Zahlenraum bis 10",
+    "subjects": ["MA"],
+    "grades": [1],
+    "tags": ["Zahlenpyramide", "ZahlenBis10", "Addition"],
+    "type": "DOC"
+}

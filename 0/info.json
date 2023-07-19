@@ -1,0 +1,8 @@
+{
+    "name": "Verben konjugieren Präsens und Präteritum",
+    "description": "Mit dieser Software kann man 6 Verben im Infinitv im Handumdrehen in die Zeitformen Präsens und Präteritum bringen und ein Arbeitsblatt erstellen",
+    "subjects": ["DE"],
+    "grades": [3, 4],
+    "tags": ["Konjugation", "Präsens", "Präteritum", "Arbeitsblatt"],
+    "type": "WEB"
+}
