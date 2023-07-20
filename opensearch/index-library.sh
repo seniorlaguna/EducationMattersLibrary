@@ -4,7 +4,7 @@
 OPENSEARCH="https://localhost:9200"
 
 # Apache Tika
-TIKA="java -jar ~/Downloads/tika-app-2.8.0.jar -A"
+TIKA="java -jar /Users/ft/Downloads/tika-app-2.8.0.jar -A"
 
 # OUTPUT FILE
 BULK="bulk.json"
@@ -22,7 +22,11 @@ function indexMaterial {
 }
 
 function parseTextContent {
-    echo "Tika parsed content"
+    CONTENT=""
+
+    CONTENT="$CONTENT $($TIKA $1 | tr '[:space:]' ' ' | tr -cd '[:alnum:] ://.,_')"
+
+    echo $CONTENT
 }
 
 function processMaterial {
@@ -45,7 +49,7 @@ function processMaterial {
     cat $1/info.json | \
     jq ".thumbnails = [$THUMBNAILS]" | \
     jq ".name_completion = $(jq ".name" $1/info.json)" | \
-    jq ".text_content = \"$(parseTextContent)\"" | \
+    jq ".text_content = \"$(parseTextContent $1/info.json)\"" | \
     jq -c \
     >> $BULK
 }
