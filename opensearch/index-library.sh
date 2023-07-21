@@ -49,7 +49,7 @@ function processMaterial {
     cat $1/info.json | \
     jq ".thumbnails = [$THUMBNAILS]" | \
     jq ".name_completion = $(jq ".name" $1/info.json)" | \
-    jq ".text_content = \"$(parseTextContent $1/info.json)\"" | \
+    jq ".text_content = \"\"" | \
     jq -c \
     >> $BULK
 }

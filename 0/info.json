@@ -4,5 +4,7 @@
     "subjects": ["DE"],
     "grades": [3, 4],
     "tags": ["Konjugation", "Präsens", "Präteritum", "Arbeitsblatt"],
-    "type": "WEB"
+    "type": "WEB",
+    "persons": ["grinsch"],
+    "file": "src/index.html"
 }

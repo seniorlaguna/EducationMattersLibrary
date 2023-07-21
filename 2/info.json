@@ -4,5 +4,6 @@
     "subjects": ["DE"],
     "grades": [4],
     "tags": ["tk"],
-    "type": "DOC"
+    "type": "DOC",
+    "persons": ["grinsch"]
 }
