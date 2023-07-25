@@ -1,9 +1,10 @@
 {
     "name": "Wörter mit tk",
-    "description": "Ein Arbeitsblatt zum Üben der Wörter mit tk",
+    "description": "Ein Arbeitsblatt mit verschiedenen Aufgaben mit Wörtern mit tk",
     "subjects": ["DE"],
     "grades": [4],
     "tags": ["tk"],
     "type": "DOC",
-    "persons": ["grinsch"]
+    "persons": ["grinsch", "flo"],
+    "file": "irgendwas.txt"
 }
