@@ -7,6 +7,7 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v3
       - run: pip install -r opensearch/requirements.txt
-      - run: python3 opensearch/index-library.py
+      - name: Python3 Index Library
+        run: python3 opensearch/index-library.py
         env:
           OPENSEARCH: ${{ secrets.OPENSEARCH }}
