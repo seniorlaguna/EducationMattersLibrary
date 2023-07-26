@@ -103,7 +103,9 @@ class Material:
 
         try:
             parsed = parser.from_file(join(self.id, self.info["file"]))
-            self.info["text_content"] = parsed["content"]
+            text = " ".join(parsed["content"].split())
+
+            self.info["text_content"] = text
         except:
             self.info["text_content"] = ""
 
