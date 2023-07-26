@@ -17,7 +17,9 @@ class Material:
         self.id = id
         self.info = None
 
-        if self.__checkPrerequisites():
+        self.valid = self.__checkPrerequisites()
+
+        if self.valid:
             self.__populateInfoJson()
             self.__addThumbnails()
 
@@ -142,7 +144,7 @@ def main():
     correctMaterials = 0
  
     for material in materials:
-        if material.info is not None:
+        if material.valid:
             correctMaterials += 1
             data += str(material)
 
