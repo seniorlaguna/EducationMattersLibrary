@@ -3,6 +3,8 @@ import logging
 from os.path import exists, join, isdir, isfile
 import json
 import requests
+import tika
+from tika import parser
 
 class Material:
     loggingEnabled: bool = False
@@ -98,7 +100,12 @@ class Material:
 
     def __populateInfoJson(self):
         self.info["name_completion"] = self.info["name"]
-        self.info["text_content"] = ""
+
+        try:
+            parsed = parser.from_file(join(self.id, self.info["file"]))
+            self.info["text_content"] = parsed["content"]
+        except:
+            self.info["text_content"] = ""
 
     def __addThumbnails(self):
         self.info["thumbnails"] = []
@@ -118,6 +125,8 @@ class Material:
                json.dumps(self.info) + "\n"
 
 def main():
+    tika.initVM()
+
     materials: list[Material] = []
     for entry in os.scandir("./"):
         if entry.is_dir() and entry.name.isnumeric():
