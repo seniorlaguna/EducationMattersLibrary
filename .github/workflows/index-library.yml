@@ -10,4 +10,4 @@ jobs:
       - name: Python3 Index Library
         run: python3 opensearch/index-library.py
         env:
-          OPENSEARCH: ${{ secrets.OPENSEARCH }}
+          OPENSEARCH: ${{ vars.OPENSEARCH }}
