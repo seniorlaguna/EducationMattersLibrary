@@ -11,3 +11,5 @@ jobs:
         run: python3 opensearch/index-library.py
         env:
           OPENSEARCH: ${{ vars.OPENSEARCH }}
+          OPENSEARCH_USER: ${{ secrets.OPENSEARCH_USER }}
+          OPENSEARCH_PASSWORD: ${{ secrets.OPENSEARCH_PASSWORD }}

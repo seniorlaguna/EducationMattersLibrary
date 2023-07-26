@@ -142,7 +142,9 @@ def main():
             correctMaterials += 1
             data += str(material)
 
-    print("Opensearch HOST:", os.environ["OPENSEARCH"])
+    print("Opensearch Host:", os.environ["OPENSEARCH"])
+    print("Opensearch User:", os.environ["OPENSEARCH_USER"])
+    print("Opensearch Password:", os.environ["OPENSEARCH_PASSWORD"])
     print(data)
     return
 
