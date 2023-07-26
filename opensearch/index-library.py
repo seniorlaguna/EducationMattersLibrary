@@ -131,6 +131,9 @@ def main():
             correctMaterials += 1
             data += str(material)
 
+    print(data)
+    return
+
     headers = {"Content-Type": "application/x-ndjson"}
     resp = requests.put("https://localhost:9200/materials/_bulk", headers=headers, auth=("admin", "admin"), verify=False, data=data)
 

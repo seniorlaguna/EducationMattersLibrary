@@ -14,5 +14,4 @@ jobs:
           ls ${{ github.workspace }}
       - run: pwd
       - run: pip install -r opensearch/requirements.txt
-      - run: python3 -c "print(101)"
-      - run: echo "🍏 This job's status is ${{ job.status }}."
+      - run: python3 opensearch/index-library.py
