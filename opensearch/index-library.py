@@ -142,6 +142,7 @@ def main():
             correctMaterials += 1
             data += str(material)
 
+    print(os.environ["OPENSEARCH"])
     print(data)
     return
 
