@@ -8,5 +8,5 @@ jobs:
         uses: actions/checkout@v3
       - run: pip install -r opensearch/requirements.txt
       - run: python3 opensearch/index-library.py
-        with:
+        env:
           OPENSEARCH: ${{ secrets.OPENSEARCH }}
