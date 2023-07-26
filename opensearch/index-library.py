@@ -99,17 +99,21 @@ class Material:
         return True
 
     def __populateInfoJson(self):
+        self.__log("add name_completion")
         self.info["name_completion"] = self.info["name"]
 
         try:
             parsed = parser.from_file(join(self.id, self.info["file"]))
             text = " ".join(parsed["content"].split())
 
+            self.__log("add text_content")
             self.info["text_content"] = text
-        except:
+        except Exception as e:
+            self.__log(str(e), logging.ERROR)
             self.info["text_content"] = ""
 
     def __addThumbnails(self):
+        self.__log("add thumbnails")
         self.info["thumbnails"] = []
         for file in os.scandir(f"{self.id}/thumbnails"):
             if file.is_file():
@@ -142,9 +146,9 @@ def main():
             correctMaterials += 1
             data += str(material)
 
-    print("Opensearch Host:", os.environ["OPENSEARCH"])
-    print("Opensearch User:", os.environ["OPENSEARCH_USER"])
-    print("Opensearch Password:", os.environ["OPENSEARCH_PASSWORD"])
+    #print("Opensearch Host:", os.environ["OPENSEARCH"])
+    #print("Opensearch User:", os.environ["OPENSEARCH_USER"])
+    #print("Opensearch Password:", os.environ["OPENSEARCH_PASSWORD"])
     print(data)
     return
 
