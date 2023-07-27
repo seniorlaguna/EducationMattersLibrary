@@ -7,7 +7,11 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v3
       - run: sudo apt-get update && sudo apt-get install -y libreoffice libreoffice-java-common
-      - run: pwd && ls && soffice --headless --convert-to pdf ./Example.odt
+      - run: office --headless --convert-to pdf ./Example.odt
+      - name: Test Commit
+        uses: EndBug/add-and-commit@v9
+        with:
+          add: "Example.pdf"
       - run: pip install -r opensearch/requirements.txt
       - name: Python3 Index Library
         run: python3 opensearch/index-library.py
