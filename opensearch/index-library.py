@@ -186,8 +186,8 @@ def main():
     #print("Opensearch Host:", os.environ["OPENSEARCH"])
     #print("Opensearch User:", os.environ["OPENSEARCH_USER"])
     #print("Opensearch Password:", os.environ["OPENSEARCH_PASSWORD"])
-    #print(data)
-    #return
+    print(data)
+    return
 
     headers = {"Content-Type": "application/x-ndjson"}
     resp = requests.put("https://localhost:9200/materials/_bulk", headers=headers, auth=("admin", "admin"), verify=False, data=data)
