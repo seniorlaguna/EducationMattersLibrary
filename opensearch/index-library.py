@@ -7,6 +7,11 @@ import tika
 from tika import parser
 
 class Material:
+    TYPES = (
+        "DOC",
+        "WEB"
+    )
+
     loggingEnabled: bool = False
 
     @staticmethod
@@ -17,21 +22,21 @@ class Material:
         self.id = id
         self.info = None
 
-        self.valid = self.__checkPrerequisites()
+        self.__checkPrerequisites()
 
-        if self.valid:
-            self.__populateInfoJson()
-            self.__addThumbnails()
+        self.__populateInfoJson()
+        self.__addThumbnails()
 
-    def __checkPrerequisites(self) -> bool:
+        self.__log("is valid")
+
+    def __checkPrerequisites(self):
         self.__log("Checking material " + self.id, logging.DEBUG)        
         if not self.__checkInfoJson():
-            return False
-        if not exists(f"{self.id}/thumbnails") or not isdir(f"{self.id}/thumbnails"):
-            self.__log("doesn't contain a thumbnails directory")
-            return False
-
-        return True
+            raise ValueError()
+        if not self.__checkThumbnails():
+            raise ValueError()
+        if not self.__checkFile():
+            raise ValueError()
 
     def __checkInfoJson(self) -> bool:
         path = join(self.id, "info.json")
@@ -80,8 +85,9 @@ class Material:
             ("grades", list, lambda x: all(type(i) == int for i in x), "All grades must be of type int"),
             ("tags", list, lambda x: all(type(i) == str and len(i) > 0 for i in x), "All tags must be of type string and must not be empty"),
             ("type", str, lambda x: len(x) > 0, "Type must not be empty"),
+            ("type", str, lambda x: x in Material.TYPES, "invalid type"),
             ("persons", list, lambda x: True, ""),
-            ("file", str, lambda x: len(x) > 0, "File must not be empty")
+            ("file", str, lambda x: len(x) > 0, "File must not be empty"),
         ]
 
         for (k, t, c, m) in requirements:
@@ -96,6 +102,35 @@ class Material:
                 return False
             except ValueError as e:
                 self.__log(str(e), logging.ERROR)
+                return False
+        
+        return True
+
+    def __checkThumbnails(self) -> bool:
+        thumbnailsDir = f"{self.id}/thumbnails"
+        if not exists(thumbnailsDir) or not isdir(f"{self.id}/thumbnails"):
+            self.__log("doesn't contain a thumbnails directory", logging.ERROR)
+            return False
+        
+        if len(list(os.scandir(thumbnailsDir))) == 0:
+            self.__log("doesn't have any thumbnails", logging.ERROR)
+            return False
+
+        return True
+
+    def __checkFile(self) -> bool:
+        file = f"{self.id}/{self.info['file']}"
+
+        # Check existance
+        if not exists(file) or not isfile(file):
+            self.__log("given file doesnt exist", logging.ERROR)
+            return False
+
+        # Type Checks
+        t = self.info["type"]
+        if t == "DOC":
+            if not file.endswith(".odf"):
+                self.__log("has type DOC but the file is not in the odf format")
                 return False
         
         return True
@@ -135,31 +170,31 @@ class Material:
 def main():
     tika.initVM()
 
-    materials: list[Material] = []
+    data = ""
+    invalidMaterials = 0
+    materialsCount = 0
+
     for entry in os.scandir("./"):
         if entry.is_dir() and entry.name.isnumeric():
-            materials.append(Material(entry.name))
-
-    data = ""
-    correctMaterials = 0
- 
-    for material in materials:
-        if material.valid:
-            correctMaterials += 1
-            data += str(material)
+            materialsCount += 1
+            try:
+                m = Material(entry.name)
+                data += str(m)
+            except ValueError:
+                invalidMaterials += 1
 
     #print("Opensearch Host:", os.environ["OPENSEARCH"])
     #print("Opensearch User:", os.environ["OPENSEARCH_USER"])
     #print("Opensearch Password:", os.environ["OPENSEARCH_PASSWORD"])
-    print(data)
-    return
+    #print(data)
+    #return
 
     headers = {"Content-Type": "application/x-ndjson"}
     resp = requests.put("https://localhost:9200/materials/_bulk", headers=headers, auth=("admin", "admin"), verify=False, data=data)
 
     
     logging.info("[*] REPORT")
-    logging.info(f"[*] {correctMaterials} / {len(materials)} materials are valid")
+    logging.info(f"[!] {invalidMaterials} / {materialsCount} materials were invalid")
     if resp.status_code == 200:
         logging.info("[*] updated index successfully")
     else:

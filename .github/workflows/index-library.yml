@@ -6,6 +6,7 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
+      - run: sudo apt-get update && sudo apt-get install -y libreoffice-core-nogui
       - run: pip install -r opensearch/requirements.txt
       - name: Python3 Index Library
         run: python3 opensearch/index-library.py
